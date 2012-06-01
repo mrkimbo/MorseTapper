@@ -12,14 +12,14 @@
 {
 	color: #AAAAAA;
 	fontFamily: Verdana;
-	fontSize: 20;
+	fontSize: 18;
 }
 
 .HelpTextNote
 {
-	color: #CCCCCC;
+	color: #BBBBBB;
 	fontFamily: Verdana;
-	fontSize: 20;
+	fontSize: 19;
 }
 
 .keyEntryDisplay
@@ -57,5 +57,12 @@
 	color: #CCCCCC;
 	fontFamily: Georgia;
 	fontSize: 50;
+}
+global
+{
+	chrome-color: #000000;
+	symbol-color: #000000;
+	content-background-color: #222222;
+	selection-color: #666666;
 }
 

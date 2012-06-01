@@ -1,0 +1,5 @@
+RDK Signing: (FlashBuilder Should do this for you)
+"/Applications/Adobe Flash Builder Burrito/sdks/blackberry-tablet-sdk-0.9.4/bin/blackberry-signer" -verbose -cskpass "spidey" -keystore "/Users/mac/Library/Research In Motion/Lot62 Developer Certificate.p12" -storepass spidey "/Users/mac/Documents/projects/Personal/Morse/release/MorseTapper.bar" RDK
+
+Author Signing:
+"/Applications/Adobe Flash Builder Burrito/sdks/blackberry-tablet-sdk-0.9.4/bin/blackberry-signer" -keystore "/Users/mac/Library/Research In Motion/Lot62 Developer Certificate.p12" -storepass spidey "/Users/mac/Documents/projects/Personal/Morse/release/MorseTapper.bar" author

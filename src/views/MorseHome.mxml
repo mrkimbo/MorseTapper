@@ -4,7 +4,7 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		xmlns:transitions="caurina.transitions.*"
 		xmlns:components="components.*"
-		creationComplete="init();" currentState="KeyInput" title="Morse Trainer"
+		creationComplete="init();" currentState="KeyInput" title="Morse Tapper"
 		mouseDown.TapInput="mouseDown(event);"
 		mouseUp.TapInput="mouseUp(event);">
 	<s:states>
@@ -26,6 +26,9 @@
 			import events.MorseCaptureEvent;
 			import model.Alphabet;
 			
+			protected const VERSION:String = "1.0.0";
+			
+			
 			protected function init():void
 			{
 				capture.addEventListener( MorseCaptureEvent.INPUT,onTapCapture,false,0,true );
@@ -34,12 +37,20 @@
 			
 			protected function exit():void
 			{
-				stage.nativeWindow.close();
+				switch( currentState ){
+					case "Help":
+						currentState = previousState;
+						break;
+					default:
+						stage.nativeWindow.close();
+						break;
+				}
 			}
 			
 			protected function clearInput():void
 			{
 				inputTxt.text = '';
+				encode();
 			}
 			
 			protected function mouseDown(event:MouseEvent):void
@@ -59,18 +70,15 @@
 			{
 				switch( e.input ){
 					case Alphabet.DOT:
-						trace( 'onMorseInput( DOT )' );
 						entryDisplay.text += e.input;
 						break;
 					
 					case Alphabet.DASH:
-						trace( 'onMorseInput( DASH )' );
 						entryDisplay.text += e.input;
 						break;
 					
 					case MorseCapture.SWIPE:
 						// Backspace //
-						trace( 'onMorseInput( SWIPE )' );
 						inputTxt.text = inputTxt.text.substr( 0,Math.max( 0,inputTxt.text.length-1) );
 						break;
 				}
@@ -79,7 +87,7 @@
 			protected function onTapCaptureComplete( e:MorseCaptureEvent ):void
 			{
 				var letter:String = Alphabet.decode( e.input ).toLowerCase();
-				trace( 'onTapCaptureComplete( ' + e.input + ' => ' + letter + ' )' );
+				//trace( 'onTapCaptureComplete( ' + e.input + ' => ' + letter + ' )' );
 				holder.push( letter );
 				inputTxt.appendText( letter );
 				keyAnim.text = letter;
@@ -111,7 +119,7 @@
 			protected function updateOutput():void
 			{
 				output.text = holder.join('');
-				trace( output.height + ',' + output.transform.pixelBounds.height );
+				//trace( output.height + ',' + output.transform.pixelBounds.height );
 				
 				//if( output.transform.pixelBounds.height > output.height ){
 				//	inputTxt.text = inputTxt.text.substr( 0,Math.max( 0,inputTxt.text.length-1) );
@@ -164,8 +172,7 @@
 		]]>
 	</fx:Script>
 	<s:navigationContent>
-		<s:Button id="helpButton" left="0" top="0" click="showHelp();" icon="HelpButton"
-				  icon.Help="BackButton"/>
+		<s:Button id="helpButton" left="0" top="0" click="showHelp();" icon="HelpButton"/>
 	</s:navigationContent>
 	<s:actionContent>
 		<s:Button id="closeBtn" right="0" top="0" click="exit();" icon="CloseButton"
@@ -173,9 +180,13 @@
 	</s:actionContent>
 	
 	<s:Rect includeIn="TapInput" id="bg" height="100%" width="100%" alpha="0.0">
+
 		<s:fill>
+
 			<s:SolidColor color="0xFFFFFF"/>
+
 		</s:fill>
+
 	</s:Rect>
 	
 	<s:Button id="clearBtn" includeIn="KeyInput,TapInput" x="580.25" width="175" height="60"
@@ -191,10 +202,10 @@
 			  x.TapInput="35" y.TapInput="410" width.TapInput="250" label.TapInput="Keyboard Entry"/>
 	<s:Label includeIn="KeyInput,TapInput" x="37" y="12" mouseChildren="false" mouseEnabled="false"
 			 text="Type your text here or click the 'Tap Entry' button for non-keyboard entry."
-			 text.TapInput="Tap anwhere below to enter Morse Code sequences. Swipe left to for backspace."/>
+			 text.TapInput="Tap anwhere below to enter Morse Code sequences. Swipe left for backspace."/>
 	<s:TextArea id="inputTxt" includeIn="KeyInput,TapInput" x="35" y="44" width="950" height="146"
-				change="onInputChange()" textInput="onKeyInput(event);" maxChars="160"
-				restrict="0-9\a-z\:;\/\.@?= " verticalScrollPolicy="on"
+				change="onInputChange()" maxChars="160" restrict="0-9\a-z\:;\/\.@?= "
+				textInput="onKeyInput(event);" verticalScrollPolicy="on"
 				editable.TapInput="false" mouseChildren.TapInput="false"
 				mouseEnabled.TapInput="false"/>
 	<s:Label id="output" includeIn="KeyInput" x="35" y="205" width="950" height="191"
@@ -209,15 +220,16 @@
 	<!-- Help elements -->
 	<s:Label id="helptextTitle1" includeIn="Help" x="37" y="34" mouseEnabled="false" styleName="Title"
 			 text="Keyboard Entry"/>
-	<s:Label id="helptextTitle2" includeIn="Help" x="37" y="172" mouseEnabled="false" styleName="Title" 
+	<s:Label id="helptextTitle2" includeIn="Help" x="37" y="152" mouseEnabled="false" styleName="Title" 
 			 text="Tap Entry"/>
 	<s:Label includeIn="Help" x="37" y="73" width="538" styleName="HelpText"
 			 text="Use the on screen keyboard to enter your text normally. &#xd;It will be encoded automatically as you type."/>
-	<s:Label includeIn="Help" x="37" y="208" width="538" styleName="HelpText"
+	<s:Label includeIn="Help" x="37" y="188" width="538" styleName="HelpText"
 			 text="Tap the screen to enter either DOTS or DASHES. Once you have completed a code sequence, the letter will be automatically translated and added to the input field.&#xd;&#xa;&#xa;To remove a letter, swipe your finger from right to left."/>
 	<s:Label includeIn="Help" x="600" y="34" styleName="Title" text="Morse Code Reference:"/>
 	<s:List id="dictionary" includeIn="Help" x="600" y="75" width="375" height="386"
-			dataProvider="{Alphabet.data}" itemRenderer="components.DictionaryItemRenderer"/>
+			dataProvider="{Alphabet.data}"
+			itemRenderer="components.DictionaryItemRenderer"/>
 	<s:Label id="keyAnim" includeIn="TapInput" alpha="0" horizontalCenter="0"
 			 styleName="keyAnimLabel" text="" verticalCenter="0"/>
 	<s:Label includeIn="Help" x="37" y="394" width="530" styleName="HelpTextNote"

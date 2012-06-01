@@ -15,14 +15,14 @@
 
 	<!-- A universally unique application identifier. Must be unique across all AIR applications.
 	Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-	<id>Morse</id>
+	<id>com.lot63.blackberry.MorseTapper</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>Morse</filename>
+	<filename>MorseTapper</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<name>Morse</name>
+	<name>MorseTapper</name>
 	
 	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
 	Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -37,10 +37,10 @@
 	<!-- <description></description> -->
 
 	<!-- Copyright information. Optional -->
-	<!-- <copyright></copyright> -->
+	<copyright>Lot62 Ltd</copyright>
 
 	<!-- Publisher ID. Used if you're updating an application created prior to 1.5.3 -->
-	<!-- <publisherID></publisherID> -->
+	<!--<publisherID></publisherID>-->
 
 	<!-- Settings for the application's initial window. Required. -->
 	<initialWindow>
@@ -107,12 +107,12 @@
 	<!-- The icon the system uses for the application. For at least one resolution,
 	specify the path to a PNG file included in the AIR package. Optional. -->
 	<icon>
-		<!--<image16x16></image16x16>
-		<image32x32></image32x32>
-		<image36x36></image36x36>
-		<image48x48></image48x48>-->
-		<image72x72>assets/Icon72x72.png</image72x72>
-		<!--<image128x128></image128x128>-->
+		<image72x72>assets/icons/Icon72x72.png</image72x72>
+		<image16x16>assets/icons/Icon16x16.png</image16x16>
+		<image32x32>assets/icons/Icon32x32.png</image32x32>
+		<image36x36>assets/icons/Icon36x36.png</image36x36>
+		<image48x48>assets/icons/Icon48x48.png</image48x48>
+		<image128x128>assets/icons/Icon128x128.png</image128x128>
 	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version

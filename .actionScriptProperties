@@ -19,15 +19,18 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/spark_dmv.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_dmv.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_flashflexkit.swc" useDefaultLinkType="false"/>
-          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/air/applicationupdater_ui.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/air/airframework.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/air/applicationupdater_ui.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_flashflexkit.swc" useDefaultLinkType="false"/>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
-      <libraryPathEntry kind="3" linkType="1" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/qnx-screen/qnx-screen.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="1" linkType="1" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/blackberry"/>
       <libraryPathEntry kind="3" linkType="1" path="libs/assets.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="1" linkType="1" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/qnx-screen"/>
+      <libraryPathEntry kind="3" linkType="2" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/air/qnx-air.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${BLACKBERRY_TABLET_SDK}/frameworks/libs/qnx-screen/qnx-screen.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -40,11 +43,16 @@
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
-    <buildTarget buildTargetName="com.qnx.flexide.multiplatform.qnx.platform" extraPackagingOptions="" includeLibs="false" signBarFile="false">
-      <airSettings airCertificatePath="" airTimestamp="true" version="1">
-        <airExcludes/>
-      </airSettings>
+    <buildTarget buildTargetName="com.qnx.flexide.multiplatform.qnx.platform" extraPackagingOptions="" includeLibs="true" signBarFile="true">
       <multiPlatformSettings enabled="true" platformID="com.qnx.flexide.multiplatform.qnx.platform" version="2"/>
+      <airSettings airCertificatePath="" airTimestamp="true" version="1">
+        <airExcludes>
+          <pathEntry path="assets/.DS_Store"/>
+          <pathEntry path=".DS_Store"/>
+          <pathEntry path="assets/icons/.DS_Store"/>
+          <pathEntry path="model"/>
+        </airExcludes>
+      </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>
     <buildTarget androidSettingsVersion="1" buildTargetName="com.adobe.flexide.multiplatform.android.platform">

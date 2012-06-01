@@ -5,7 +5,9 @@
 				mouseEnabled="false" mouseChildren="false" >
 	<fx:Script>
 		<![CDATA[
-			private const HEIGHT:uint = 60;
+			private const HEIGHT:uint 	= 60;
+			private const STROKE1:uint 	= 0x000000;
+			private const STROKE2:uint	= 0x222222;
 		]]>
 	</fx:Script>
 	
@@ -14,12 +16,12 @@
 	</s:Rect>
 	<s:Line xFrom="{letterCell.width}" xTo="{letterCell.width}" yFrom="0" yTo="{HEIGHT}" >
 		<s:stroke>
-			<s:SolidColorStroke color="0x666666" weight="1"/>
+			<s:SolidColorStroke color="{STROKE2}" weight="1"/>
 		</s:stroke>
 	</s:Line>
 	<s:Line xFrom="{letterCell.width+1}" xTo="{letterCell.width+1}" yFrom="0" yTo="{HEIGHT}" >
 		<s:stroke>
-			<s:SolidColorStroke color="0x000000" weight="1"/>
+			<s:SolidColorStroke color="{STROKE1}" weight="1"/>
 		</s:stroke>
 	</s:Line>
 	
@@ -30,17 +32,17 @@
 	
 	<s:Rect height="1" bottom="2" width="100%">
 		<s:fill>
-			<s:SolidColor color="0x666666"/>
+			<s:SolidColor color="{STROKE2}"/>
 		</s:fill>
 	</s:Rect>
 	<s:Rect height="1" bottom="1" width="100%">
 		<s:fill>
-			<s:SolidColor color="0x000000"/>
+			<s:SolidColor color="{STROKE1}"/>
 		</s:fill>
 	</s:Rect>
 	<s:Rect height="1" bottom="0" width="100%">
 		<s:fill>
-			<s:SolidColor color="0x666666"/>
+			<s:SolidColor color="{STROKE2}"/>
 		</s:fill>
 	</s:Rect>
 		
