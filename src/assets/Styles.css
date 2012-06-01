@@ -1,0 +1,61 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+
+
+.Title
+{
+	color: #EEEEEE;
+	fontFamily: Verdana;
+	fontSize: 26;
+}
+.HelpText
+{
+	color: #AAAAAA;
+	fontFamily: Verdana;
+	fontSize: 20;
+}
+
+.HelpTextNote
+{
+	color: #CCCCCC;
+	fontFamily: Verdana;
+	fontSize: 20;
+}
+
+.keyEntryDisplay
+{
+	color: #AAAAAA;
+	fontFamily: Georgia;
+	fontSize: 40;
+	line-height: 30;
+	line-break:to-fit;
+}
+
+.keyAnimLabel
+{
+	color: #FFFFFF;
+	fontFamily: Georgia;
+	fontSize: 100;
+}
+
+.tapEntryDisplay
+{
+	color: #AAAAAA;
+	fontFamily: Georgia;
+	fontSize: 100;
+}
+
+.dictionaryCell1
+{
+	color: #CCCCCC;
+	fontFamily: Georgia;
+	fontSize: 35;
+}
+
+.dictionaryCell2
+{
+	color: #CCCCCC;
+	fontFamily: Georgia;
+	fontSize: 50;
+}
+

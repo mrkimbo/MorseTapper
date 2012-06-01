@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				autoDrawBackground="true" focusEnabled="false" 
+				mouseEnabled="false" mouseChildren="false" >
+	<fx:Script>
+		<![CDATA[
+			private const HEIGHT:uint = 60;
+		]]>
+	</fx:Script>
+	
+	<s:Rect id="letterCell" height="{HEIGHT}" width="40%">
+		
+	</s:Rect>
+	<s:Line xFrom="{letterCell.width}" xTo="{letterCell.width}" yFrom="0" yTo="{HEIGHT}" >
+		<s:stroke>
+			<s:SolidColorStroke color="0x666666" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line xFrom="{letterCell.width+1}" xTo="{letterCell.width+1}" yFrom="0" yTo="{HEIGHT}" >
+		<s:stroke>
+			<s:SolidColorStroke color="0x000000" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	
+	<s:Label id="letter" text="{data.letter}" styleName="dictionaryCell1" 
+			 top="13" left="20" />
+	<s:Label id="code" text="{data.code}" styleName="dictionaryCell2" 
+			 top="3" left="{letterCell.width + 22}" />
+	
+	<s:Rect height="1" bottom="2" width="100%">
+		<s:fill>
+			<s:SolidColor color="0x666666"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="1" bottom="1" width="100%">
+		<s:fill>
+			<s:SolidColor color="0x000000"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="1" bottom="0" width="100%">
+		<s:fill>
+			<s:SolidColor color="0x666666"/>
+		</s:fill>
+	</s:Rect>
+		
+</s:ItemRenderer>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:transitions="caurina.transitions.*"
+		xmlns:components="components.*"
+		creationComplete="init();" currentState="KeyInput" title="Morse Trainer"
+		mouseDown.TapInput="mouseDown(event);"
+		mouseUp.TapInput="mouseUp(event);">
+	<s:states>
+		<s:State name="KeyInput"/>
+		<s:State name="Help"/>
+		<s:State name="TapInput"/>
+	</s:states>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Vector id="holder" type="String" />
+		<fx:String id="previousState" />
+		<components:MorseCapture id="capture" />
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			import events.MorseCaptureEvent;
+			import model.Alphabet;
+			
+			protected function init():void
+			{
+				capture.addEventListener( MorseCaptureEvent.INPUT,onTapCapture,false,0,true );
+				capture.addEventListener( MorseCaptureEvent.COMPLETE,onTapCaptureComplete,false,0,true );
+			}
+			
+			protected function exit():void
+			{
+				stage.nativeWindow.close();
+			}
+			
+			protected function clearInput():void
+			{
+				inputTxt.text = '';
+			}
+			
+			protected function mouseDown(event:MouseEvent):void
+			{
+				if( event.target == entryModeToggle || event.target == clearBtn ) return;
+				bg.alpha = .1;
+				capture.tapStart(event);
+			}
+			protected function mouseUp(event:MouseEvent):void
+			{
+				if( event.target == entryModeToggle || event.target == clearBtn ) return;
+				bg.alpha = 0;
+				capture.tapEnd(event);
+			}
+			
+			protected function onTapCapture( e:MorseCaptureEvent ):void
+			{
+				switch( e.input ){
+					case Alphabet.DOT:
+						trace( 'onMorseInput( DOT )' );
+						entryDisplay.text += e.input;
+						break;
+					
+					case Alphabet.DASH:
+						trace( 'onMorseInput( DASH )' );
+						entryDisplay.text += e.input;
+						break;
+					
+					case MorseCapture.SWIPE:
+						// Backspace //
+						trace( 'onMorseInput( SWIPE )' );
+						inputTxt.text = inputTxt.text.substr( 0,Math.max( 0,inputTxt.text.length-1) );
+						break;
+				}
+			}
+			
+			protected function onTapCaptureComplete( e:MorseCaptureEvent ):void
+			{
+				var letter:String = Alphabet.decode( e.input ).toLowerCase();
+				trace( 'onTapCaptureComplete( ' + e.input + ' => ' + letter + ' )' );
+				holder.push( letter );
+				inputTxt.appendText( letter );
+				keyAnim.text = letter;
+				showAnim();
+				updateOutput();
+			}
+			
+			protected function showAnim():void
+			{
+				entryDisplay.text = "";
+				
+				Tweener.removeTweens( keyAnim );
+				keyAnim.scaleX 	= 1;
+				keyAnim.scaleY 	= 1;
+				keyAnim.alpha 	= 1.0;
+				Tweener.addTween( keyAnim,{ scaleX:5,scaleY:5,alpha:0,transition:'easeOutQuad',time:.75 } );
+			}
+			
+			protected function encode():void
+			{
+				holder.length = 0;
+				var str:String = inputTxt.text.replace( /[\r\n]/gm,' ' );
+				for( var i:uint;i<str.length;i++ ){
+					holder.push( Alphabet.encode( str.charAt( i ) ) );
+				}
+				updateOutput();
+			}
+
+			protected function updateOutput():void
+			{
+				output.text = holder.join('');
+				trace( output.height + ',' + output.transform.pixelBounds.height );
+				
+				//if( output.transform.pixelBounds.height > output.height ){
+				//	inputTxt.text = inputTxt.text.substr( 0,Math.max( 0,inputTxt.text.length-1) );
+				//	encode();
+				//}
+			}
+			
+			protected function showHelp():void
+			{
+				var state:String = currentState;
+				switch( state ){
+					case 'KeyInput':
+					case 'TapInput':
+						currentState = 'Help';
+						break;
+					case 'Help':
+						currentState = previousState;
+						break;
+				}
+				previousState = state;
+			}
+			
+			protected function changeInputMode():void
+			{
+				switch( currentState ){
+					case 'KeyInput':
+						currentState = 'TapInput';
+						break;
+					case 'TapInput':
+						currentState = 'KeyInput';
+						break;
+				}
+				onInputChange();
+			}
+			
+			protected function onKeyInput( e:TextEvent ):void
+			{
+				if ( e.text == "\n" ){
+					e.preventDefault();
+				}
+			}
+
+			protected function onInputChange():void
+			{			
+				inputTxt.text = inputTxt.text.replace( /\\n|\\r/ig,"" );			
+				counter.text = inputTxt.text.length + '/160';
+				encode();
+			}
+
+		]]>
+	</fx:Script>
+	<s:navigationContent>
+		<s:Button id="helpButton" left="0" top="0" click="showHelp();" icon="HelpButton"
+				  icon.Help="BackButton"/>
+	</s:navigationContent>
+	<s:actionContent>
+		<s:Button id="closeBtn" right="0" top="0" click="exit();" icon="CloseButton"
+				  right.KeyInput="944" top.KeyInput="0" />
+	</s:actionContent>
+	
+	<s:Rect includeIn="TapInput" id="bg" height="100%" width="100%" alpha="0.0">
+		<s:fill>
+			<s:SolidColor color="0xFFFFFF"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Button id="clearBtn" includeIn="KeyInput,TapInput" x="580.25" width="175" height="60"
+			  label="Clear" click="clearInput();" enabled="true"
+			  bottom.Help="35.100006" mouseChildren="false"
+			  x.KeyInput="300" y.KeyInput="410" label.KeyInput="Clear"
+			  x.TapInput="300" y.TapInput="410"/>
+	<s:Button id="entryModeToggle" includeIn="KeyInput,TapInput" width="220" height="60"
+			  label="Tap Entry" click="changeInputMode();" enabled="true"
+			  right.Help="39.150024" bottom.Help="35.350006" mouseChildren="false"
+			  x.KeyInput="35" y.KeyInput="410" width.KeyInput="250"
+			  click.KeyInput="changeInputMode();"
+			  x.TapInput="35" y.TapInput="410" width.TapInput="250" label.TapInput="Keyboard Entry"/>
+	<s:Label includeIn="KeyInput,TapInput" x="37" y="12" mouseChildren="false" mouseEnabled="false"
+			 text="Type your text here or click the 'Tap Entry' button for non-keyboard entry."
+			 text.TapInput="Tap anwhere below to enter Morse Code sequences. Swipe left to for backspace."/>
+	<s:TextArea id="inputTxt" includeIn="KeyInput,TapInput" x="35" y="44" width="950" height="146"
+				change="onInputChange()" textInput="onKeyInput(event);" maxChars="160"
+				restrict="0-9\a-z\:;\/\.@?= " verticalScrollPolicy="on"
+				editable.TapInput="false" mouseChildren.TapInput="false"
+				mouseEnabled.TapInput="false"/>
+	<s:Label id="output" includeIn="KeyInput" x="35" y="205" width="950" height="191"
+			 mouseChildren="false" mouseEnabled="false" styleName="keyEntryDisplay"/>
+	<s:Label id="counter" includeIn="KeyInput" x="874.3" y="160" width="100" text="0/160"
+			 textAlign="right" verticalAlign="middle" visible="false"/>
+	
+	<!-- Tap Input elements -->
+	<s:Label id="entryDisplay" includeIn="TapInput" y="250.7" width="381" horizontalCenter="0"
+			 styleName="tapEntryDisplay" textAlign="center" verticalAlign="middle"/>
+	
+	<!-- Help elements -->
+	<s:Label id="helptextTitle1" includeIn="Help" x="37" y="34" mouseEnabled="false" styleName="Title"
+			 text="Keyboard Entry"/>
+	<s:Label id="helptextTitle2" includeIn="Help" x="37" y="172" mouseEnabled="false" styleName="Title" 
+			 text="Tap Entry"/>
+	<s:Label includeIn="Help" x="37" y="73" width="538" styleName="HelpText"
+			 text="Use the on screen keyboard to enter your text normally. &#xd;It will be encoded automatically as you type."/>
+	<s:Label includeIn="Help" x="37" y="208" width="538" styleName="HelpText"
+			 text="Tap the screen to enter either DOTS or DASHES. Once you have completed a code sequence, the letter will be automatically translated and added to the input field.&#xd;&#xa;&#xa;To remove a letter, swipe your finger from right to left."/>
+	<s:Label includeIn="Help" x="600" y="34" styleName="Title" text="Morse Code Reference:"/>
+	<s:List id="dictionary" includeIn="Help" x="600" y="75" width="375" height="386"
+			dataProvider="{Alphabet.data}" itemRenderer="components.DictionaryItemRenderer"/>
+	<s:Label id="keyAnim" includeIn="TapInput" alpha="0" horizontalCenter="0"
+			 styleName="keyAnimLabel" text="" verticalCenter="0"/>
+	<s:Label includeIn="Help" x="37" y="394" width="530" styleName="HelpTextNote"
+			 text="Note: Non-alpha numeric codes have been created for this app and should not be considered part of the original Morse Code specification."/>
+</s:View>
